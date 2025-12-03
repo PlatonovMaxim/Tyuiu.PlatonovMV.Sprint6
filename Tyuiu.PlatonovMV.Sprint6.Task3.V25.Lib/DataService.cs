@@ -5,7 +5,8 @@ namespace Tyuiu.PlatonovMV.Sprint6.Task3.V25.Lib
 {
     public class DataService : ISprint6Task3V25
     {
-        // Сортировка строк матрицы по возрастанию в третьем столбце (индекс 2)
+        // Сортировка по возрастанию ТОЛЬКО в третьем столбце (индекс 2),
+        // остальные элементы матрицы остаются на своих местах.
         public int[,] Calculate(int[,] matrix)
         {
             if (matrix == null)
@@ -16,27 +17,25 @@ namespace Tyuiu.PlatonovMV.Sprint6.Task3.V25.Lib
 
             int[,] result = new int[rows, columns];
 
-            // копируем, чтобы не портить исходный массив
+            // копируем исходную матрицу
             Array.Copy(matrix, result, matrix.Length);
 
-            // простой пузырёк по строкам с учётом третьего столбца (index 2)
-            int colIndex = 2;
+            int colIndex = 2; // третий столбец (индекс 2)
 
-            for (int i = 0; i < rows - 1; i++)
+            // извлекаем третий столбец в отдельный одномерный массив
+            int[] columnValues = new int[rows];
+            for (int i = 0; i < rows; i++)
             {
-                for (int j = 0; j < rows - 1 - i; j++)
-                {
-                    if (result[j, colIndex] > result[j + 1, colIndex])
-                    {
-                        // меняем местами строки j и j+1
-                        for (int c = 0; c < columns; c++)
-                        {
-                            int temp = result[j, c];
-                            result[j, c] = result[j + 1, c];
-                            result[j + 1, c] = temp;
-                        }
-                    }
-                }
+                columnValues[i] = result[i, colIndex];
+            }
+
+            // сортируем этот одномерный массив по возрастанию
+            Array.Sort(columnValues);
+
+            // записываем отсортированные значения обратно в третий столбец
+            for (int i = 0; i < rows; i++)
+            {
+                result[i, colIndex] = columnValues[i];
             }
 
             return result;
