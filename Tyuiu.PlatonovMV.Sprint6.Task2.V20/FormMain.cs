@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Drawing;
 using System.Windows.Forms;
 using Tyuiu.PlatonovMV.Sprint6.Task2.V20.Lib;
@@ -13,43 +13,41 @@ namespace Tyuiu.PlatonovMV.Sprint6.Task2.V20
         {
             InitializeComponent();
 
-            // Оформление формы
-            this.Text = "Спринт 6 | Таск 2 | Вариант 20 | Платонов М.В.";
+            // РћС„РѕСЂРјР»РµРЅРёРµ С„РѕСЂРјС‹
+            this.Text = "РЎРїСЂРёРЅС‚ 6 | РўР°СЃРє 2 | Р’Р°СЂРёР°РЅС‚ 20 | РџР»Р°С‚РѕРЅРѕРІ Рњ.Р’.";
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.StartPosition = FormStartPosition.CenterScreen;
 
-            // Кнопка "Выполнить" - базовый вид
+            // РљРЅРѕРїРєР° "Р’С‹РїРѕР»РЅРёС‚СЊ" - Р±Р°Р·РѕРІС‹Р№ РІРёРґ
             buttonDone_PMV.BackColor = Color.LimeGreen;
             buttonDone_PMV.FlatStyle = FlatStyle.Flat;
             buttonDone_PMV.FlatAppearance.BorderSize = 1;
             buttonDone_PMV.FlatAppearance.BorderColor = Color.DarkGreen;
 
-            // Вешаем обработчики для подсветки
-            buttonDone_PMV.MouseEnter += buttonDone_PMV_MouseEnter;
-            buttonDone_PMV.MouseLeave += buttonDone_PMV_MouseLeave;
-            buttonDone_PMV.MouseDown += buttonDone_PMV_MouseDown;
-            buttonDone_PMV.MouseUp += buttonDone_PMV_MouseUp;
-
-            // Заголовки графика
+            // РќР°СЃС‚СЂРѕР№РєР° РіСЂР°С„РёРєР°
             chartFunction_PMV.Titles.Clear();
-            chartFunction_PMV.Titles.Add("График функции F(x)");
-            chartFunction_PMV.ChartAreas[0].AxisX.Title = "Ось X";
-            chartFunction_PMV.ChartAreas[0].AxisY.Title = "Ось Y";
+            chartFunction_PMV.Titles.Add("Р“СЂР°С„РёРє С„СѓРЅРєС†РёРё F(x)");
+            chartFunction_PMV.ChartAreas[0].AxisX.Title = "РћСЃСЊ X";
+            chartFunction_PMV.ChartAreas[0].AxisY.Title = "РћСЃСЊ Y";
 
-            // Столбцы DataGridView (если не заданы в дизайнере)
+            // Р“СЂР°С„РёРє РёР·РЅР°С‡Р°Р»СЊРЅРѕ РїСѓСЃС‚РѕР№, Р±РµР· Р»РµРіРµРЅРґС‹
+            chartFunction_PMV.Series[0].Points.Clear();
+            chartFunction_PMV.Series[0].IsVisibleInLegend = false;
+
+            // РЎС‚РѕР»Р±С†С‹ DataGridView (РµСЃР»Рё РЅРµ Р·Р°РґР°РЅС‹ РІ РґРёР·Р°Р№РЅРµСЂРµ)
             if (dataGridViewFunction_PMV.Columns.Count == 0)
             {
                 dataGridViewFunction_PMV.Columns.Add("colX", "X");
                 dataGridViewFunction_PMV.Columns.Add("colFx", "F(x)");
             }
 
-            // Только чтение для таблицы
             dataGridViewFunction_PMV.ReadOnly = true;
             dataGridViewFunction_PMV.AllowUserToAddRows = false;
+            dataGridViewFunction_PMV.RowHeadersVisible = false;
         }
 
-        // кнопка "Выполнить"
+        // РєРЅРѕРїРєР° "Р’С‹РїРѕР»РЅРёС‚СЊ"
         private void buttonDone_PMV_Click(object sender, EventArgs e)
         {
             try
@@ -59,52 +57,55 @@ namespace Tyuiu.PlatonovMV.Sprint6.Task2.V20
 
                 if (startStep > stopStep)
                 {
-                    MessageBox.Show("Начало диапазона не может быть больше конца",
-                                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("РќР°С‡Р°Р»Рѕ РґРёР°РїР°Р·РѕРЅР° РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ Р±РѕР»СЊС€Рµ РєРѕРЅС†Р°",
+                                    "РћС€РёР±РєР°", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
                 double[] valueArray = ds.GetMassFunction(startStep, stopStep);
                 int len = valueArray.Length;
 
-                // Очищаем таблицу и график
+                // РћС‡РёС‰Р°РµРј С‚Р°Р±Р»РёС†Сѓ Рё РіСЂР°С„РёРє
                 dataGridViewFunction_PMV.Rows.Clear();
                 chartFunction_PMV.Series[0].Points.Clear();
 
                 int x = startStep;
                 for (int i = 0; i < len; i++)
                 {
-                    // строка в DataGridView
+                    // СЃС‚СЂРѕРєР° РІ DataGridView
                     dataGridViewFunction_PMV.Rows.Add(
                         x.ToString(),
                         valueArray[i].ToString("F2"));
 
-                    // точка на графике
+                    // С‚РѕС‡РєР° РЅР° РіСЂР°С„РёРєРµ
                     chartFunction_PMV.Series[0].Points.AddXY(x, valueArray[i]);
 
                     x++;
                 }
+
+                // РїРѕРєР°Р·С‹РІР°РµРј Р»РµРіРµРЅРґСѓ РїРѕСЃР»Рµ РїРѕСЃС‚СЂРѕРµРЅРёСЏ
+                chartFunction_PMV.Series[0].IsVisibleInLegend = true;
             }
             catch
             {
-                MessageBox.Show("Введены неверные данные", "Ошибка",
+                MessageBox.Show("Р’РІРµРґРµРЅС‹ РЅРµРІРµСЂРЅС‹Рµ РґР°РЅРЅС‹Рµ", "РћС€РёР±РєР°",
                                 MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        // кнопка "Справка"
+        // РєРЅРѕРїРєР° "РЎРїСЂР°РІРєР°"
         private void buttonHelp_PMV_Click(object sender, EventArgs e)
         {
             MessageBox.Show(
-                "Спринт 6, таск 2, вариант 20.\n" +
-                "Табулирование функции F(x) = sin(x)/(x+1,2) - sin(x)*2 - 2x\n" +
-                "Выполнил студент группы ИСТНб-25-1 Платонов Максим Владимирович.",
-                "Справка",
+                "РЎРїСЂРёРЅС‚ 6, С‚Р°СЃРє 2, РІР°СЂРёР°РЅС‚ 20.\n" +
+                "РўР°Р±СѓР»РёСЂРѕРІР°РЅРёРµ С„СѓРЅРєС†РёРё F(x) = sin(x)/(x+1,2) - sin(x)*2 - 2x\n" +
+                "Р’С‹РїРѕР»РЅРёР» СЃС‚СѓРґРµРЅС‚ РіСЂСѓРїРїС‹ РРЎРўРќР±-25-1 РџР»Р°С‚РѕРЅРѕРІ РњР°РєСЃРёРј Р’Р»Р°РґРёРјРёСЂРѕРІРёС‡.",
+                "РЎРїСЂР°РІРєР°",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
         }
 
-        // Ограничение ввода (старт)
+        // РћРіСЂР°РЅРёС‡РµРЅРёРµ РІРІРѕРґР° (СЃС‚Р°СЂС‚)
         private void textBoxStartStep_PMV_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '-')
@@ -114,7 +115,7 @@ namespace Tyuiu.PlatonovMV.Sprint6.Task2.V20
                 e.Handled = true;
         }
 
-        // Ограничение ввода (конец)
+        // РћРіСЂР°РЅРёС‡РµРЅРёРµ РІРІРѕРґР° (РєРѕРЅРµС†)
         private void textBoxStopStep_PMV_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '-')
@@ -124,30 +125,40 @@ namespace Tyuiu.PlatonovMV.Sprint6.Task2.V20
                 e.Handled = true;
         }
 
-        // Подсветка кнопки "Выполнить"
+        // РџРѕРґСЃРІРµС‚РєР° РєРЅРѕРїРєРё "Р’С‹РїРѕР»РЅРёС‚СЊ" вЂ“ РєР°Рє Сѓ РїСЂРµРїРѕРґР°,
+        // СЃРѕР±С‹С‚РёСЏ РІРµС€Р°СЋС‚СЃСЏ С‡РµСЂРµР· Designer:
+        // MouseEnter в†’ buttonDone_PMV_MouseEnter
+        // MouseLeave в†’ buttonDone_PMV_MouseLeave
+        // MouseDown  в†’ buttonDone_PMV_MouseDown
+        // MouseUp    в†’ buttonDone_PMV_MouseUp
+
         private void buttonDone_PMV_MouseEnter(object sender, EventArgs e)
         {
-            buttonDone_PMV.BackColor = Color.LawnGreen;
+            // РќР°РІРµР»Рё РјС‹С€СЊ
+            buttonDone_PMV.BackColor = Color.Blue;
         }
 
         private void buttonDone_PMV_MouseLeave(object sender, EventArgs e)
         {
-            buttonDone_PMV.BackColor = Color.LimeGreen;
+            // РЈРІРµР»Рё РјС‹С€СЊ
+            buttonDone_PMV.BackColor = Color.Red;
         }
 
         private void buttonDone_PMV_MouseDown(object sender, MouseEventArgs e)
         {
-            buttonDone_PMV.BackColor = Color.ForestGreen;
+            // РќР°Р¶Р°Р»Рё РєРЅРѕРїРєСѓ
+            buttonDone_PMV.BackColor = Color.Green;
         }
 
         private void buttonDone_PMV_MouseUp(object sender, MouseEventArgs e)
         {
-            buttonDone_PMV.BackColor = Color.LawnGreen;
+            // РћС‚РїСѓСЃС‚РёР»Рё РєРЅРѕРїРєСѓ
+            buttonDone_PMV.BackColor = Color.Yellow;
         }
 
-        private void chart1_Click(object sender, EventArgs e)
+        // РџСѓСЃС‚РѕР№ РѕР±СЂР°Р±РѕС‚С‡РёРє, РµСЃР»Рё СЃР»СѓС‡Р°Р№РЅРѕ РєР»РёРєРЅСѓР»Рё РїРѕ РіСЂР°С„РёРєСѓ РІ РґРёР·Р°Р№РЅРµСЂРµ
+        private void chartFunction_PMV_Click(object sender, EventArgs e)
         {
-
         }
     }
 }
