@@ -88,5 +88,10 @@ namespace Tyuiu.PlatonovMV.Sprint6.Task3.V25
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
         }
+
+        private void dataGridViewMatrix_PMV_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }
