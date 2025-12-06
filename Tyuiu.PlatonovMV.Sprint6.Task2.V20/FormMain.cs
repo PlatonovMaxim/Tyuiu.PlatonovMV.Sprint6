@@ -93,7 +93,7 @@ namespace Tyuiu.PlatonovMV.Sprint6.Task2.V20
             }
         }
 
-        // кнопка "Справка"
+        // кнопка "Справка"2
         private void buttonHelp_PMV_Click(object sender, EventArgs e)
         {
             MessageBox.Show(
