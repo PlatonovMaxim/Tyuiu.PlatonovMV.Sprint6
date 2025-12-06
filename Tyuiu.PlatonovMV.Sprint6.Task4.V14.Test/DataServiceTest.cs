@@ -20,7 +20,7 @@ namespace Tyuiu.PlatonovMV.Sprint6.Task4.V14.Test
             Assert.AreEqual(11, res.Length);
 
             // Проверим точку x = 0 (индекс 5)
-            // F(0) = 2*0 - 4 + (-1)/(sin(0)+1) = -4 - 1 = -5
+            // F(0) = 2*0 - 4 + (-1)/(sin(0)+1) = -4 - 1 = -5 .
             double expected = -5.00;
             Assert.AreEqual(expected, res[5]);
         }
