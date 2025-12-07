@@ -8,29 +8,22 @@ namespace Tyuiu.PlatonovMV.Sprint6.Task6.V10.Test
     public class DataServiceTest
     {
         [TestMethod]
-        public void CollectTextFromFile_FindWordsWithW()
+        public void CollectTextFromFile_FindWordsWithSmallW()
         {
             
             string path = Path.GetTempFileName();
             File.WriteAllLines(path, new[]
             {
-                "nXkwQYzgZ tsCms LlckTwkpaAGTvLPc",
-                "fthzqqL XcNHugFmbsRgVVfsgHNGuUC",
-                "SeRTRfFeAxzn raCml PzLyVamXVcmNn",
-                "dlezsxTS z KxFxadaTMeBz BRW pSuA",
-                "tVMMaxdnYJoY EUAji hntD RTmxxVdu"
+                "aaa nXkwQYzgZ bbb",
+                "ccc LlckTwkpaAGTvLPc BRW",
+                "ddd eee"
             });
 
             DataService ds = new DataService();
             string res = ds.CollectTextFromFile(path);
 
             
-            Assert.IsTrue(res.Contains("nXkwQYzgZ"));
-            Assert.IsTrue(res.Contains("LlckTwkpaAGTvLPc"));
-            Assert.IsTrue(res.Contains("PzLyVamXVcmNn"));
-
-            string[] words = res.Split(' ', System.StringSplitOptions.RemoveEmptyEntries);
-            Assert.AreEqual(3, words.Length);
+            Assert.AreEqual("nXkwQYzgZ LlckTwkpaAGTvLPc", res);
 
             File.Delete(path);
         }
