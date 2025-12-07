@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using tyuiu.cources.programming.interfaces.Sprint6;
 
 namespace Tyuiu.PlatonovMV.Sprint6.Task5.V10.Lib
 {
     public class DataService : ISprint6Task5V10
     {
-        // Читает числа из файла, убирает нули, округляет до 3 знаков
+        // Читает числа из файла, удаляет нули, округляет до 3 знаков
         public double[] LoadFromDataFile(string path)
         {
             if (string.IsNullOrWhiteSpace(path))
@@ -19,8 +18,6 @@ namespace Tyuiu.PlatonovMV.Sprint6.Task5.V10.Lib
                 throw new FileNotFoundException("Файл не найден", path);
 
             List<double> nums = new List<double>();
-
-            // важен CultureInfo, чтобы запятая корректно читалась
             var culture = new CultureInfo("ru-RU");
 
             using (StreamReader reader = new StreamReader(path))
@@ -33,10 +30,8 @@ namespace Tyuiu.PlatonovMV.Sprint6.Task5.V10.Lib
 
                     if (double.TryParse(line, NumberStyles.Any, culture, out double val))
                     {
-                        if (Math.Abs(val) > double.Epsilon) // != 0
-                        {
+                        if (Math.Abs(val) > double.Epsilon) // не равен 0
                             nums.Add(Math.Round(val, 3));
-                        }
                     }
                 }
             }
