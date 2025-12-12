@@ -49,3 +49,4 @@ namespace Tyuiu.PlatonovMV.Sprint6.Task7.V17.Lib
 //- 5  14 - 2 - 9  18  16  20 - 14 7   17
 //- 9  8   2   4 - 3 - 14 16  17 - 9  17
 //
+//
