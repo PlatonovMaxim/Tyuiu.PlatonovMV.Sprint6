@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -8,45 +9,59 @@ namespace Tyuiu.PlatonovMV.Sprint6.Task7.V17
 {
     public partial class FormMain : Form
     {
-        DataService ds = new DataService();
+        private readonly DataService ds = new DataService();
 
-        string openFilePath = "";
+        private string openFilePath = string.Empty;
+        private int[,] resultMatrix = null;
 
         public FormMain()
         {
             InitializeComponent();
 
+            
             this.Text = "Спринт 6 | Таск 7 | Вариант 17 | Платонов М.В.";
-            this.WindowState = FormWindowState.Maximized;
             this.StartPosition = FormStartPosition.CenterScreen;
-            this.FormBorderStyle = FormBorderStyle.Sizable;
+            this.WindowState = FormWindowState.Maximized;
 
-            // панель с кнопками сверху
-            panelTop_PMV.Dock = DockStyle.Top;
+           
+            openFileDialogTask_PMV.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
+            openFileDialogTask_PMV.Title = "Выберите файл InPutFileTask7V17.csv";
 
-            // условие
-            groupBoxTask_PMV.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            saveFileDialogTask_PMV.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
+            saveFileDialogTask_PMV.Title = "Сохранить результат";
+            saveFileDialogTask_PMV.FileName = "OutPutFileTask7.csv";
 
-            // таблицы и разделитель
-            SetupGrid(dataGridViewIn_PMV);
-            SetupGrid(dataGridViewOut_PMV);
+            
+            toolTip_PMV.IsBalloon = true;
+            toolTip_PMV.ShowAlways = true;
 
-            dataGridViewIn_PMV.Dock = DockStyle.Left;
-            splitter_PMV.Dock = DockStyle.Left;
-            dataGridViewOut_PMV.Dock = DockStyle.Fill;
-
-            // путь к файлу
-            textBoxPath_PMV.ReadOnly = true;
-
-            // кнопки изначально
-            buttonRun_PMV.Enabled = false;
-            buttonSave_PMV.Enabled = false;
-
-            // ToolTip
             toolTip_PMV.SetToolTip(buttonOpen_PMV, "Открыть файл InPutFileTask7V17.csv");
             toolTip_PMV.SetToolTip(buttonRun_PMV, "Изменить чётные числа во 2-й строке на 4");
             toolTip_PMV.SetToolTip(buttonSave_PMV, "Сохранить результат в OutPutFileTask7.csv");
             toolTip_PMV.SetToolTip(buttonAbout_PMV, "О программе");
+
+            
+            buttonOpen_PMV.MouseDown += ButtonIcon_MouseDown_ShowTip;
+            buttonRun_PMV.MouseDown += ButtonIcon_MouseDown_ShowTip;
+            buttonSave_PMV.MouseDown += ButtonIcon_MouseDown_ShowTip;
+            buttonAbout_PMV.MouseDown += ButtonIcon_MouseDown_ShowTip;
+
+            
+            labelTask_PMV.Text =
+                "Дан файл InPutFileTask7V17.csv в котором хранится матрица целочисленных значений.\r\n" +
+                "Загрузить файл через openFileDialog в объект dataGridViewIn.\r\n" +
+                "Изменить во второй строке чётные числа на 4.\r\n" +
+                "Результат вывести в dataGridViewOut. Сохранить результат через saveFileDialog.";
+
+            textBoxPath_PMV.ReadOnly = true;
+
+            
+            SetupGrid(dataGridViewIn_PMV);
+            SetupGrid(dataGridViewOut_PMV);
+
+           
+            buttonRun_PMV.Enabled = false;
+            buttonSave_PMV.Enabled = false;
         }
 
         private void SetupGrid(DataGridView dgv)
@@ -55,107 +70,116 @@ namespace Tyuiu.PlatonovMV.Sprint6.Task7.V17
             dgv.AllowUserToDeleteRows = false;
             dgv.AllowUserToResizeColumns = false;
             dgv.AllowUserToResizeRows = false;
+
+            dgv.ReadOnly = true;
             dgv.RowHeadersVisible = false;
             dgv.ColumnHeadersVisible = false;
-            dgv.ReadOnly = true;
-            dgv.BackgroundColor = System.Drawing.Color.White;
-            dgv.GridColor = System.Drawing.Color.LightGray;
+
+            dgv.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            dgv.MultiSelect = false;
+
+            dgv.BackgroundColor = Color.White;
+            dgv.GridColor = Color.LightGray;
             dgv.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
         }
 
-        // Открыть файл
+        private void ButtonIcon_MouseDown_ShowTip(object sender, MouseEventArgs e)
+        {
+            if (sender is not Control c) return;
+
+            string text = toolTip_PMV.GetToolTip(c);
+            if (string.IsNullOrWhiteSpace(text)) return;
+
+            toolTip_PMV.Show(text, c, 0, c.Height, 1500); 
+        }
+
+        // ================== OPEN ==================
         private void buttonOpen_PMV_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Title = "Выберите файл InPutFileTask7V17.csv";
-            ofd.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
+            if (openFileDialogTask_PMV.ShowDialog() != DialogResult.OK)
+                return;
 
-            if (ofd.ShowDialog() == DialogResult.OK)
+            openFilePath = openFileDialogTask_PMV.FileName;
+            textBoxPath_PMV.Text = openFilePath;
+
+            try
             {
-                openFilePath = ofd.FileName;
-                textBoxPath_PMV.Text = openFilePath;
+                
+                FillGridFromFile(dataGridViewIn_PMV, openFilePath);
 
-                try
-                {
-                    string fileData = File.ReadAllText(openFilePath);
-                    fileData = fileData.Replace("\r\n", "\n");
-                    string[] lines = fileData.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                
+                dataGridViewOut_PMV.Rows.Clear();
+                dataGridViewOut_PMV.Columns.Clear();
+                resultMatrix = null;
 
-                    FillGridFromCsv(dataGridViewIn_PMV, lines);
+                buttonRun_PMV.Enabled = true;
+                buttonSave_PMV.Enabled = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка чтения файла:\n" + ex.Message,
+                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                    dataGridViewOut_PMV.Rows.Clear();
-                    dataGridViewOut_PMV.Columns.Clear();
-
-                    buttonRun_PMV.Enabled = true;
-                    buttonSave_PMV.Enabled = false;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Ошибка при чтении файла:\n" + ex.Message,
-                                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                buttonRun_PMV.Enabled = false;
+                buttonSave_PMV.Enabled = false;
             }
         }
 
-        private void FillGridFromCsv(DataGridView dgv, string[] lines)
+        private void FillGridFromFile(DataGridView dgv, string path)
+        {
+            string[] lines = File.ReadAllLines(path);
+            FillGridFromLines(dgv, lines);
+        }
+
+        private void FillGridFromLines(DataGridView dgv, string[] lines)
         {
             dgv.Rows.Clear();
             dgv.Columns.Clear();
 
-            if (lines.Length == 0) return;
+            
+            var list = new System.Collections.Generic.List<string>();
+            foreach (var l in lines)
+                if (!string.IsNullOrWhiteSpace(l))
+                    list.Add(l);
 
-            string[] firstRow = lines[0].Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-            int cols = firstRow.Length;
+            if (list.Count == 0) return;
+
+            int cols = list[0].Split(';').Length;
 
             dgv.ColumnCount = cols;
             for (int c = 0; c < cols; c++)
-                dgv.Columns[c].Width = 30;
+                dgv.Columns[c].Width = 40;
 
-            foreach (string line in lines)
+            foreach (string line in list)
             {
-                string[] parts = line.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                string[] parts = line.Split(';');
                 if (parts.Length == cols)
                     dgv.Rows.Add(parts);
             }
         }
 
-        // Выполнить
+        // ================== RUN ==================
         private void buttonRun_PMV_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(openFilePath) || !File.Exists(openFilePath))
             {
-                MessageBox.Show("Файл не найден. Повторите выбор.");
+                MessageBox.Show("Сначала выберите файл.");
                 buttonRun_PMV.Enabled = false;
                 return;
             }
 
             try
             {
-                // читаем матрицу из файла
-                int[,] matrix = ds.GetMatrix(openFilePath);
-
-                int rows = matrix.GetUpperBound(0) + 1;
-                int cols = matrix.GetUpperBound(1) + 1;
-
-                // изменяем чётные во второй строке (индекс 1) на 4
-                int targetRow = 1;
-                if (targetRow < rows)
-                {
-                    for (int c = 0; c < cols; c++)
-                    {
-                        if (matrix[targetRow, c] % 2 == 0)
-                            matrix[targetRow, c] = 4;
-                    }
-                }
-
-                ShowMatrix(dataGridViewOut_PMV, matrix);
+                // Важно: GetMatrix уже возвращает ИЗМЕНЁННУЮ матрицу по заданию
+                resultMatrix = ds.GetMatrix(openFilePath);
+                ShowMatrix(dataGridViewOut_PMV, resultMatrix);
 
                 buttonSave_PMV.Enabled = true;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ошибка при обработке матрицы:\n" + ex.Message,
-                                "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Ошибка обработки:\n" + ex.Message,
+                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -164,12 +188,12 @@ namespace Tyuiu.PlatonovMV.Sprint6.Task7.V17
             dgv.Rows.Clear();
             dgv.Columns.Clear();
 
-            int rows = matrix.GetUpperBound(0) + 1;
-            int cols = matrix.GetUpperBound(1) + 1;
+            int rows = matrix.GetLength(0);
+            int cols = matrix.GetLength(1);
 
             dgv.ColumnCount = cols;
             for (int c = 0; c < cols; c++)
-                dgv.Columns[c].Width = 30;
+                dgv.Columns[c].Width = 40;
 
             for (int r = 0; r < rows; r++)
             {
@@ -181,60 +205,55 @@ namespace Tyuiu.PlatonovMV.Sprint6.Task7.V17
             }
         }
 
-        // Сохранить
+        // ================== SAVE ==================
         private void buttonSave_PMV_Click(object sender, EventArgs e)
         {
-            if (dataGridViewOut_PMV.Rows.Count == 0)
+            if (resultMatrix == null)
             {
-                MessageBox.Show("Нет данных для сохранения.");
+                MessageBox.Show("Сначала выполните обработку (кнопка Выполнить).");
                 return;
             }
 
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Title = "Сохранить результат в OutPutFileTask7.csv";
-            sfd.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
-            sfd.FileName = "OutPutFileTask7.csv";
+            if (saveFileDialogTask_PMV.ShowDialog() != DialogResult.OK)
+                return;
 
-            if (sfd.ShowDialog() == DialogResult.OK)
+            try
             {
-                try
-                {
-                    SaveGridToCsv(dataGridViewOut_PMV, sfd.FileName);
-                    MessageBox.Show("Файл успешно сохранён:\n" + sfd.FileName,
-                                    "Сохранение", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Ошибка при сохранении файла:\n" + ex.Message,
-                                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                SaveMatrixToCsv(resultMatrix, saveFileDialogTask_PMV.FileName);
+
+                MessageBox.Show("Файл сохранён:\n" + saveFileDialogTask_PMV.FileName,
+                    "Сохранение", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка сохранения:\n" + ex.Message,
+                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void SaveGridToCsv(DataGridView dgv, string path)
+        private void SaveMatrixToCsv(int[,] matrix, string path)
         {
-            int rows = dgv.RowCount;
-            int cols = dgv.ColumnCount;
+            int rows = matrix.GetLength(0);
+            int cols = matrix.GetLength(1);
 
             StringBuilder sb = new StringBuilder();
 
             for (int r = 0; r < rows; r++)
             {
-                string[] cells = new string[cols];
+                string[] parts = new string[cols];
                 for (int c = 0; c < cols; c++)
-                {
-                    cells[c] = dgv.Rows[r].Cells[c].Value?.ToString() ?? "0";
-                }
-                sb.AppendLine(string.Join(";", cells));
+                    parts[c] = matrix[r, c].ToString();
+
+                sb.AppendLine(string.Join(";", parts));
             }
 
             File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
         }
 
-        // О программе
+        // ================== ABOUT ==================
         private void buttonAbout_PMV_Click(object sender, EventArgs e)
         {
-            FormAbout about = new FormAbout();
+            using FormAbout about = new FormAbout();
             about.ShowDialog();
         }
     }

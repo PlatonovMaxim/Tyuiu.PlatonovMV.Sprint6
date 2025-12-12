@@ -10,17 +10,17 @@ namespace Tyuiu.PlatonovMV.Sprint6.Task7.V17
             InitializeComponent();
 
             this.Text = "О программе";
-            this.StartPosition = FormStartPosition.CenterScreen;
+            this.StartPosition = FormStartPosition.CenterParent;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
 
             labelInfo_PMV.Text =
-                "Разработчик: Платонов М.В.\n" +
-                "Группа: ИСТНб-25-1\n\n" +
-                "Программа разработана в рамках изучения языка C#.\n" +
-                "Тюменский индустриальный университет (c) 2025\n" +
-                "Высшая школа цифровых технологий (c) 2025\n\n" +
+                "Разработчик: Платонов М.В.\r\n" +
+                "Группа: ИСТНб-25-1\r\n\r\n" +
+                "Программа разработана в рамках изучения языка C#.\r\n" +
+                "Тюменский индустриальный университет (c) 2025\r\n" +
+                "Высшая школа цифровых технологий (c) 2025\r\n\r\n" +
                 "Внутреннее имя: Tyuiu.PlatonovMV.Sprint6.Task7.V17";
         }
 
