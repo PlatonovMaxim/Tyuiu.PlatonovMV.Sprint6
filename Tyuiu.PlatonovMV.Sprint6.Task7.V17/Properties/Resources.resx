@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!--
-    Microsoft ResX Schema
-
+  <!-- 
+    Microsoft ResX Schema 
+    
     Version 2.0
-
-    The primary goals of this format is to allow a simple XML format
-    that is mostly human readable. The generation and parsing of the
-    various data types are done through the TypeConverter classes
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
     associated with the data types.
-
+    
     Example:
-
+    
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-
-    There are any number of "resheader" rows that contain simple
+                
+    There are any number of "resheader" rows that contain simple 
     name/value pairs.
-
-    Each data row contains a name, and value. The row also contains a
-    type or mimetype. Type corresponds to a .NET class that support
-    text/value conversion through the TypeConverter architecture.
-    Classes that don't support this are serialized and stored with the
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
     mimetype set.
-
-    The mimetype is used for serialized objects, and tells the
-    ResXResourceReader how to depersist the object. This is currently not
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
     extensible. For a given mimetype the value must be set accordingly:
-
-    Note - application/x-microsoft.net.object.binary.base64 is the format
-    that the ResXResourceWriter will generate, however the reader can
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
     read any of the formats listed below.
-
+    
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-
+    
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array
+    value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
@@ -117,46 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="pictureBoxPhoto_PMV.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        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
-        RU5ErkJggg==
-</value>
-  </data>
-  <data name="labelInfo_PMV.Text" xml:space="preserve">
-    <value> Разработчик: Платонов М.В.
- Группа: ИСТНб-25-1
- Программа разработана в рамках изучения языка C#.
- Тюменский индустриальный университет (c) 2025.
- Высшая школа цифровых технологий (c) 2025.
- Внутреннее имя: Tyuiu.PlatonovMV.Sprint6.Task7.V17</value>
-  </data>
 </root>

@@ -175,7 +175,7 @@
             Controls.Add(groupBoxTask_PMV);
             MaximizeBox = false;
             Name = "FormMain";
-            Text = "Спринт 6 | Таск 6 | Вариант 10 | Платонов М.В.";
+            Text = "Спринт 6 | Таск 7 | Вариант 17 | Платонов М.В.";
             groupBoxTask_PMV.ResumeLayout(false);
             groupBoxTask_PMV.PerformLayout();
             groupBoxIn_PMV.ResumeLayout(false);

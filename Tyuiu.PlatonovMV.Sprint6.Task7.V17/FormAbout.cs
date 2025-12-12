@@ -9,11 +9,6 @@ namespace Tyuiu.PlatonovMV.Sprint6.Task7.V17
         {
             InitializeComponent();
 
-            this.Text = "О программе";
-            this.StartPosition = FormStartPosition.CenterParent;
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
 
             labelInfo_PMV.Text =
                 "Разработчик: Платонов М.В.\r\n" +
@@ -26,7 +21,12 @@ namespace Tyuiu.PlatonovMV.Sprint6.Task7.V17
 
         private void buttonOk_PMV_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
+        }
+
+        private void labelInfo_PMV_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

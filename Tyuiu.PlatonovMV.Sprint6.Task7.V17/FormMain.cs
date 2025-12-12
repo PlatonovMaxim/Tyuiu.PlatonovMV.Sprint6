@@ -1,5 +1,4 @@
-using System;
-using System.Drawing;
+п»їusing System;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -10,7 +9,6 @@ namespace Tyuiu.PlatonovMV.Sprint6.Task7.V17
     public partial class FormMain : Form
     {
         private readonly DataService ds = new DataService();
-
         private string openFilePath = string.Empty;
         private int[,] resultMatrix = null;
 
@@ -18,50 +16,34 @@ namespace Tyuiu.PlatonovMV.Sprint6.Task7.V17
         {
             InitializeComponent();
 
-            
-            this.Text = "Спринт 6 | Таск 7 | Вариант 17 | Платонов М.В.";
+            this.Text = "РЎРїСЂРёРЅС‚ 6 | РўР°СЃРє 7 | Р’Р°СЂРёР°РЅС‚ 17 | РџР»Р°С‚РѕРЅРѕРІ Рњ.Р’.";
             this.StartPosition = FormStartPosition.CenterScreen;
             this.WindowState = FormWindowState.Maximized;
 
-           
-            openFileDialogTask_PMV.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
-            openFileDialogTask_PMV.Title = "Выберите файл InPutFileTask7V17.csv";
-
-            saveFileDialogTask_PMV.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
-            saveFileDialogTask_PMV.Title = "Сохранить результат";
-            saveFileDialogTask_PMV.FileName = "OutPutFileTask7.csv";
-
-            
-            toolTip_PMV.IsBalloon = true;
-            toolTip_PMV.ShowAlways = true;
-
-            toolTip_PMV.SetToolTip(buttonOpen_PMV, "Открыть файл InPutFileTask7V17.csv");
-            toolTip_PMV.SetToolTip(buttonRun_PMV, "Изменить чётные числа во 2-й строке на 4");
-            toolTip_PMV.SetToolTip(buttonSave_PMV, "Сохранить результат в OutPutFileTask7.csv");
-            toolTip_PMV.SetToolTip(buttonAbout_PMV, "О программе");
-
-            
-            buttonOpen_PMV.MouseDown += ButtonIcon_MouseDown_ShowTip;
-            buttonRun_PMV.MouseDown += ButtonIcon_MouseDown_ShowTip;
-            buttonSave_PMV.MouseDown += ButtonIcon_MouseDown_ShowTip;
-            buttonAbout_PMV.MouseDown += ButtonIcon_MouseDown_ShowTip;
-
-            
-            labelTask_PMV.Text =
-                "Дан файл InPutFileTask7V17.csv в котором хранится матрица целочисленных значений.\r\n" +
-                "Загрузить файл через openFileDialog в объект dataGridViewIn.\r\n" +
-                "Изменить во второй строке чётные числа на 4.\r\n" +
-                "Результат вывести в dataGridViewOut. Сохранить результат через saveFileDialog.";
-
             textBoxPath_PMV.ReadOnly = true;
 
-            
             SetupGrid(dataGridViewIn_PMV);
             SetupGrid(dataGridViewOut_PMV);
 
-           
             buttonRun_PMV.Enabled = false;
             buttonSave_PMV.Enabled = false;
+
+            openFileDialogTask_PMV.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
+            openFileDialogTask_PMV.Title = "Р’С‹Р±РµСЂРёС‚Рµ InPutFileTask7V17.csv";
+
+            saveFileDialogTask_PMV.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
+            saveFileDialogTask_PMV.Title = "РЎРѕС…СЂР°РЅРёС‚СЊ СЂРµР·СѓР»СЊС‚Р°С‚";
+            saveFileDialogTask_PMV.FileName = "OutPutFileTask7.csv";
+
+            labelTask_PMV.Text =
+                "Р”Р°РЅ С„Р°Р№Р» InPutFileTask7V17.csv РІ РєРѕС‚РѕСЂРѕРј С…СЂР°РЅРёС‚СЃСЏ РјР°С‚СЂРёС†Р° С†РµР»РѕС‡РёСЃР»РµРЅРЅС‹С… Р·РЅР°С‡РµРЅРёР№.\r\n" +
+                "Р—Р°РіСЂСѓР·РёС‚СЊ С„Р°Р№Р» С‡РµСЂРµР· openFileDialog РІ dataGridViewIn.\r\n" +
+                "РР·РјРµРЅРёС‚СЊ РІРѕ РІС‚РѕСЂРѕР№ СЃС‚СЂРѕРєРµ С‡С‘С‚РЅС‹Рµ С‡РёСЃР»Р° РЅР° 4.\r\n" +
+                "Р РµР·СѓР»СЊС‚Р°С‚ РІС‹РІРµСЃС‚Рё РІ dataGridViewOut.\r\n" +
+                "РЎРѕС…СЂР°РЅРёС‚СЊ СЂРµР·СѓР»СЊС‚Р°С‚ С‡РµСЂРµР· saveFileDialog.";
+
+
+         
         }
 
         private void SetupGrid(DataGridView dgv)
@@ -70,30 +52,12 @@ namespace Tyuiu.PlatonovMV.Sprint6.Task7.V17
             dgv.AllowUserToDeleteRows = false;
             dgv.AllowUserToResizeColumns = false;
             dgv.AllowUserToResizeRows = false;
-
             dgv.ReadOnly = true;
             dgv.RowHeadersVisible = false;
             dgv.ColumnHeadersVisible = false;
-
-            dgv.SelectionMode = DataGridViewSelectionMode.CellSelect;
-            dgv.MultiSelect = false;
-
-            dgv.BackgroundColor = Color.White;
-            dgv.GridColor = Color.LightGray;
-            dgv.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
         }
 
-        private void ButtonIcon_MouseDown_ShowTip(object sender, MouseEventArgs e)
-        {
-            if (sender is not Control c) return;
-
-            string text = toolTip_PMV.GetToolTip(c);
-            if (string.IsNullOrWhiteSpace(text)) return;
-
-            toolTip_PMV.Show(text, c, 0, c.Height, 1500); 
-        }
-
-        // ================== OPEN ==================
+        // OPEN
         private void buttonOpen_PMV_Click(object sender, EventArgs e)
         {
             if (openFileDialogTask_PMV.ShowDialog() != DialogResult.OK)
@@ -104,10 +68,9 @@ namespace Tyuiu.PlatonovMV.Sprint6.Task7.V17
 
             try
             {
-                
-                FillGridFromFile(dataGridViewIn_PMV, openFilePath);
+                string[] lines = File.ReadAllLines(openFilePath);
+                FillGridFromLines(dataGridViewIn_PMV, lines);
 
-                
                 dataGridViewOut_PMV.Rows.Clear();
                 dataGridViewOut_PMV.Columns.Clear();
                 resultMatrix = null;
@@ -117,18 +80,12 @@ namespace Tyuiu.PlatonovMV.Sprint6.Task7.V17
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ошибка чтения файла:\n" + ex.Message,
-                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("РћС€РёР±РєР° С‡С‚РµРЅРёСЏ С„Р°Р№Р»Р°:\n" + ex.Message,
+                    "РћС€РёР±РєР°", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 buttonRun_PMV.Enabled = false;
                 buttonSave_PMV.Enabled = false;
             }
-        }
-
-        private void FillGridFromFile(DataGridView dgv, string path)
-        {
-            string[] lines = File.ReadAllLines(path);
-            FillGridFromLines(dgv, lines);
         }
 
         private void FillGridFromLines(DataGridView dgv, string[] lines)
@@ -136,41 +93,38 @@ namespace Tyuiu.PlatonovMV.Sprint6.Task7.V17
             dgv.Rows.Clear();
             dgv.Columns.Clear();
 
-            
-            var list = new System.Collections.Generic.List<string>();
-            foreach (var l in lines)
-                if (!string.IsNullOrWhiteSpace(l))
-                    list.Add(l);
+            int first = -1;
+            for (int i = 0; i < lines.Length; i++)
+                if (!string.IsNullOrWhiteSpace(lines[i])) { first = i; break; }
 
-            if (list.Count == 0) return;
+            if (first == -1) return;
 
-            int cols = list[0].Split(';').Length;
+            int cols = lines[first].Split(';').Length;
 
             dgv.ColumnCount = cols;
             for (int c = 0; c < cols; c++)
                 dgv.Columns[c].Width = 40;
 
-            foreach (string line in list)
+            for (int i = 0; i < lines.Length; i++)
             {
-                string[] parts = line.Split(';');
-                if (parts.Length == cols)
-                    dgv.Rows.Add(parts);
+                if (string.IsNullOrWhiteSpace(lines[i])) continue;
+                string[] parts = lines[i].Split(';');
+                if (parts.Length == cols) dgv.Rows.Add(parts);
             }
         }
 
-        // ================== RUN ==================
+        // RUN
         private void buttonRun_PMV_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(openFilePath) || !File.Exists(openFilePath))
             {
-                MessageBox.Show("Сначала выберите файл.");
-                buttonRun_PMV.Enabled = false;
+                MessageBox.Show("РЎРЅР°С‡Р°Р»Р° РІС‹Р±РµСЂРёС‚Рµ С„Р°Р№Р».");
                 return;
             }
 
             try
             {
-                // Важно: GetMatrix уже возвращает ИЗМЕНЁННУЮ матрицу по заданию
+
                 resultMatrix = ds.GetMatrix(openFilePath);
                 ShowMatrix(dataGridViewOut_PMV, resultMatrix);
 
@@ -178,8 +132,8 @@ namespace Tyuiu.PlatonovMV.Sprint6.Task7.V17
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ошибка обработки:\n" + ex.Message,
-                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("РћС€РёР±РєР° РѕР±СЂР°Р±РѕС‚РєРё:\n" + ex.Message,
+                    "РћС€РёР±РєР°", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -200,17 +154,16 @@ namespace Tyuiu.PlatonovMV.Sprint6.Task7.V17
                 object[] row = new object[cols];
                 for (int c = 0; c < cols; c++)
                     row[c] = matrix[r, c];
-
                 dgv.Rows.Add(row);
             }
         }
 
-        // ================== SAVE ==================
+        // SAVE
         private void buttonSave_PMV_Click(object sender, EventArgs e)
         {
             if (resultMatrix == null)
             {
-                MessageBox.Show("Сначала выполните обработку (кнопка Выполнить).");
+                MessageBox.Show("РЎРЅР°С‡Р°Р»Р° РЅР°Р¶РјРёС‚Рµ Р’С‹РїРѕР»РЅРёС‚СЊ.");
                 return;
             }
 
@@ -220,14 +173,13 @@ namespace Tyuiu.PlatonovMV.Sprint6.Task7.V17
             try
             {
                 SaveMatrixToCsv(resultMatrix, saveFileDialogTask_PMV.FileName);
-
-                MessageBox.Show("Файл сохранён:\n" + saveFileDialogTask_PMV.FileName,
-                    "Сохранение", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("РЎРѕС…СЂР°РЅРµРЅРѕ:\n" + saveFileDialogTask_PMV.FileName,
+                    "РћРљ", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ошибка сохранения:\n" + ex.Message,
-                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("РћС€РёР±РєР° СЃРѕС…СЂР°РЅРµРЅРёСЏ:\n" + ex.Message,
+                    "РћС€РёР±РєР°", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -250,11 +202,16 @@ namespace Tyuiu.PlatonovMV.Sprint6.Task7.V17
             File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
         }
 
-        // ================== ABOUT ==================
+        // ABOUT
         private void buttonAbout_PMV_Click(object sender, EventArgs e)
         {
             using FormAbout about = new FormAbout();
             about.ShowDialog();
+        }
+
+        private void labelTask_PMV_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
